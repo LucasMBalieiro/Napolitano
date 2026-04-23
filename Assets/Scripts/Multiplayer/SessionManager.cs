@@ -77,8 +77,14 @@ public class SessionManager : Singleton<SessionManager>
     {
         try 
         {
-            ActiveSession = await MultiplayerService.Instance.JoinSessionByCodeAsync(code);
-            Debug.Log("Successfully joined session!");
+            var playerProperties = await GetPlayerPropertiesAsync();
+
+            var joinOptions = new JoinSessionOptions()
+            {
+                PlayerProperties = playerProperties
+            };
+
+            ActiveSession = await MultiplayerService.Instance.JoinSessionByCodeAsync(code, joinOptions);
         }
         catch (Exception e)
         {
